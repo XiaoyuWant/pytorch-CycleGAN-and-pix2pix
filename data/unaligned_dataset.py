@@ -56,6 +56,36 @@ class UnalignedDataset(BaseDataset):
         B_path = self.B_paths[index_B]
         A_img = Image.open(A_path).convert('RGB')
         B_img = Image.open(B_path).convert('RGB')
+
+
+
+
+        # @XiaoyuWang
+        # 只需随机256*256的patch
+        
+        # 先缩放到0.44x 再取patch
+        # height=A_img.height
+        # width=A_img.width
+        # A_img = A_img.resize((int(0.5*width),int(0.5*height)),Image.ANTIALIAS)
+        
+        # height=B_img.height
+        # width=B_img.width
+        # B_img = B_img.resize((int(0.5*width),int(0.5*height)),Image.ANTIALIAS)
+
+        height=A_img.height
+        width=A_img.width
+        x=random.randint(0,width-256)
+        y=random.randint(0,height-256)
+        box=[x,y,x+256,y+256]
+        A_img=A_img.crop(box)
+        
+        height=B_img.height
+        width=B_img.width
+        x=random.randint(0,width-256)
+        y=random.randint(0,height-256)
+        box=[x,y,x+256,y+256]
+        B_img=B_img.crop(box)
+
         # apply image transformation
         A = self.transform_A(A_img)
         B = self.transform_B(B_img)
